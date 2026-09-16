@@ -77,7 +77,6 @@
       backdrop-filter:blur(32px) saturate(1.35);-webkit-backdrop-filter:blur(32px) saturate(1.35);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 0 0 .5px rgba(255,255,255,.24),0 16px 40px rgba(0,0,0,.12)
     }
-    .glass-piece.frames-3{grid-template-columns:120px 120px 120px minmax(0,1fr)}
     .art-frame{aspect-ratio:1;overflow:hidden;border-radius:16px;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.28)}
     .art-frame.logo{background:#fff}
     .art-frame.dark{background:#10151c}
@@ -94,10 +93,7 @@
       :root{--gutter:18px}#app{grid-template-columns:18px minmax(0,1fr) 18px;padding-bottom:86px}
       .rail{left:50%;top:auto;bottom:14px;transform:translateX(-50%);flex-direction:row;padding:7px 9px}
     }
-    @media(max-width:900px){
-      .glass-piece{grid-template-columns:110px 110px minmax(0,1fr)}
-      .glass-piece.frames-3{grid-template-columns:96px 96px 96px minmax(0,1fr)}
-    }
+    @media(max-width:900px){.glass-piece{grid-template-columns:110px 110px minmax(0,1fr)}}
     @media(max-width:680px){.tabs .tab:not(.active){display:none}.site-header{grid-template-columns:minmax(130px,1fr) auto}}
     @media(max-width:520px){
       .header-right{display:none}.hamburger{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12)}
@@ -105,8 +101,7 @@
       .mobile-menu:not(.open){display:none}
       .mobile-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
       .mobile-grid a{padding:12px;border-radius:12px;background:rgba(255,255,255,.08);font-size:11px}
-      .glass-piece,.glass-piece.frames-3{grid-template-columns:1fr 1fr;padding:10px}
-      .glass-piece.frames-3 .art-frame:nth-child(3){grid-column:1/-1;max-width:50%;justify-self:start}
+      .glass-piece{grid-template-columns:1fr 1fr;padding:10px}
       .glass-copy{grid-column:1/-1;padding:2px 4px 6px}
       .window{position:relative}
     }
@@ -201,9 +196,8 @@
               <div class="glass-tags"><span>Blender</span><span>UE</span><span>Interactive projection</span></div>
             </div>
           </article>
-          <article class="glass-piece frames-3">
-            <div class="art-frame dark"><img src="assets/gallery/arch-night.jpg" alt="Night exterior of the Ru Mo architectural design with lanterns"></div>
-            <div class="art-frame dark"><img src="assets/gallery/arch-canopy.jpg" alt="Interior under a folded metallic canopy with visitor silhouettes"></div>
+          <article class="glass-piece">
+            <div class="art-frame dark"><img src="assets/gallery/arch-night.jpg" alt="Night exterior of the architectural design with lanterns"></div>
             <div class="art-frame dark"><img src="assets/gallery/arch-hall.jpg" alt="Interior hall mixing folded massing with traditional objects"></div>
             <div class="glass-copy">
               <h3>Architecture Design</h3>
