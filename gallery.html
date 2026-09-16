@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Selected artwork by Yuhan Ma.">
+  <title>Yuhan Ma — Gallery</title>
+  <style>
+    :root {
+      --white:#fff; --dim:rgba(255,255,255,.68); --dim2:rgba(255,255,255,.5);
+      --stone:rgba(106,98,94,.34); --pad:clamp(11px,1.35vw,24px); --gap:clamp(9px,1vw,18px);
+      --r-win:clamp(20px,2vw,36px); --r-lg:clamp(16px,1.5vw,28px); --pill:999px;
+      --gutter:clamp(54px,calc((100vw - 980px)/2),220px);
+      --side:minmax(270px,34%); --ease:cubic-bezier(.2,.8,.2,1);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;color:var(--white)}
+    html{background:#8d8a86}
+    body{
+      min-height:100vh;overflow-x:hidden;background:transparent;isolation:isolate;
+      font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.02em;-webkit-font-smoothing:antialiased
+    }
+    body::before{
+      content:"";position:fixed;inset:-18px;z-index:-2;
+      background:
+        linear-gradient(115deg,rgba(47,43,40,.08),rgba(238,225,208,.06)),
+        url("assets/room-background.webp") center 52%/cover no-repeat,
+        linear-gradient(130deg,#989087,#c7bbb0 52%,#827b73);
+      filter:blur(8px) saturate(.82) brightness(.86);transform:scale(1.06)
+    }
+    body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(48,42,38,.08),rgba(48,42,38,.03) 50%,rgba(48,42,38,.08))}
+    button,a{font:inherit;color:inherit}button{border:0}a{text-decoration:none}
+    button:focus-visible,a:focus-visible{outline:2px solid rgba(255,255,255,.9);outline-offset:3px}
+    svg{display:block;width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    #app{min-height:100vh;padding:clamp(10px,1.35vw,25px) 0 70px;display:grid;grid-template-columns:var(--gutter) minmax(0,1fr) var(--gutter);gap:clamp(9px,1vw,18px) 0}
+    .browser{
+      grid-column:2;justify-self:center;width:min(calc(100% - 24px),760px);height:45px;padding:6px 10px;
+      display:grid;grid-template-columns:auto minmax(220px,1fr) auto;align-items:center;gap:10px;
+      border-radius:var(--pill);background:rgba(132,126,125,.44);backdrop-filter:blur(34px)
+    }
+    .browser-group{display:flex;align-items:center;gap:6px}
+    .chrome-btn{width:31px;height:31px;display:grid;place-items:center;padding:0;border-radius:50%;background:rgba(255,255,255,.22)}
+    .chrome-btn.plain{background:transparent}.chrome-btn.dim{opacity:.55}
+    .url{height:32px;padding:0 12px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;border-radius:var(--pill);background:rgba(30,30,30,.32);font-size:12px}
+    .url-center{display:flex;justify-content:center;align-items:center;gap:6px}.url svg{width:12px}
+    .rail{
+      position:fixed;left:max(18px,calc(50% - 550px));top:50%;transform:translateY(-50%);z-index:20;
+      padding:8px 6px;display:flex;flex-direction:column;gap:8px;border-radius:var(--pill);background:rgba(100,95,90,.34);backdrop-filter:blur(30px)
+    }
+    .rail a{
+      width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:rgba(255,255,255,.76)
+    }
+    .rail a:hover{background:rgba(255,255,255,.16);color:#fff}
+    .rail a.active{color:#fff;background:linear-gradient(145deg,rgba(255,255,255,.46),rgba(255,255,255,.22))}
+    .window{
+      grid-column:2;justify-self:center;width:min(calc(100% - 20px),980px);padding:var(--pad);
+      display:grid;gap:var(--gap);border-radius:var(--r-win);background:var(--stone);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.36)
+    }
+    .site-header{display:grid;grid-template-columns:var(--side) minmax(0,1fr);gap:var(--gap);align-items:center}
+    .search{height:38px;padding:0 14px;display:flex;align-items:center;gap:9px;color:var(--dim);border-radius:var(--pill);background:rgba(0,0,0,.12);font-size:12px}
+    .header-right{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .tabs{display:flex;gap:4px}
+    .tab{padding:10px 15px;border-radius:var(--pill);color:var(--dim);font-size:12px;white-space:nowrap}
+    .tab:hover{color:#fff}.tab.active{color:#fff;background:rgba(255,255,255,.16)}
+    .hamburger{display:none}
+    .projects-head{display:flex;align-items:end;justify-content:space-between;margin:0 2px 14px}
+    .projects-head h2{margin:0;font-size:clamp(22px,2vw,32px);font-weight:400;letter-spacing:-.025em}
+    .section-kicker{display:block;margin-bottom:5px;color:var(--dim2);font-size:9px;text-transform:uppercase;letter-spacing:.14em}
+    .see-all{padding:7px 11px;border-radius:var(--pill);background:rgba(255,255,255,.14);font-size:9px;color:var(--dim)}
+    .gallery-list{display:grid;gap:var(--gap)}
+    .glass-piece{
+      display:grid;grid-template-columns:132px 132px minmax(0,1fr);align-items:center;gap:14px;
+      padding:12px 16px 12px 12px;border-radius:22px;
+      background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.07) 52%,rgba(255,255,255,.11));
+      backdrop-filter:blur(32px) saturate(1.35);-webkit-backdrop-filter:blur(32px) saturate(1.35);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 0 0 .5px rgba(255,255,255,.24),0 16px 40px rgba(0,0,0,.12)
+    }
+    .glass-piece.frames-3{grid-template-columns:120px 120px 120px minmax(0,1fr)}
+    .art-frame{aspect-ratio:1;overflow:hidden;border-radius:16px;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.28)}
+    .art-frame.logo{background:#fff}
+    .art-frame.dark{background:#10151c}
+    .art-frame.studio{background:#d5d5d5}
+    .art-frame img{width:100%;height:100%;display:block;object-fit:cover}
+    .art-frame.logo img{object-fit:contain;padding:12px}
+    .glass-copy h3{margin:0 0 6px;font-size:18px;font-weight:500;letter-spacing:-.02em}
+    .glass-copy p{margin:0;max-width:420px;color:var(--dim);font-size:12px;line-height:1.5}
+    .glass-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .glass-tags span,.glass-tags a{padding:5px 9px;border-radius:var(--pill);background:rgba(255,255,255,.14);font-size:9px;color:rgba(255,255,255,.82)}
+    .glass-tags a:hover{color:#fff;background:rgba(255,255,255,.22)}
+    .mobile-menu{display:none}
+    @media(max-width:1130px){
+      :root{--gutter:18px}#app{grid-template-columns:18px minmax(0,1fr) 18px;padding-bottom:86px}
+      .rail{left:50%;top:auto;bottom:14px;transform:translateX(-50%);flex-direction:row;padding:7px 9px}
+    }
+    @media(max-width:900px){
+      .glass-piece{grid-template-columns:110px 110px minmax(0,1fr)}
+      .glass-piece.frames-3{grid-template-columns:96px 96px 96px minmax(0,1fr)}
+    }
+    @media(max-width:680px){.tabs .tab:not(.active){display:none}.site-header{grid-template-columns:minmax(130px,1fr) auto}}
+    @media(max-width:520px){
+      .header-right{display:none}.hamburger{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.12)}
+      .mobile-menu{display:block;position:absolute;left:var(--pad);right:var(--pad);top:66px;z-index:40;padding:14px;border-radius:18px;background:rgba(70,65,62,.72);backdrop-filter:blur(28px)}
+      .mobile-menu:not(.open){display:none}
+      .mobile-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+      .mobile-grid a{padding:12px;border-radius:12px;background:rgba(255,255,255,.08);font-size:11px}
+      .glass-piece,.glass-piece.frames-3{grid-template-columns:1fr 1fr;padding:10px}
+      .glass-piece.frames-3 .art-frame:nth-child(3){grid-column:1/-1;max-width:50%;justify-self:start}
+      .glass-copy{grid-column:1/-1;padding:2px 4px 6px}
+      .window{position:relative}
+    }
+  </style>
+</head>
+<body>
+  <svg class="sr-only" aria-hidden="true">
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-forward" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8.1 8.1 0 1 0 .2 4M20 4v7h-7"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="16" rx="1"/><rect x="14" y="4" width="6" height="16" rx="1"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 16V3m0 0L7 8m5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9H7v-7h10v7"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3m8-6 4 3-4 3m-2-9-4 12"/></symbol>
+    <symbol id="i-paper" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h5"/></symbol>
+    <symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="19" r="2"/><circle cx="6" cy="19" r="2"/><path d="M6 7v10m0-7c6 0 6 9 10 9"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+  </svg>
+
+  <main id="app">
+    <nav class="browser" aria-label="Browser toolbar">
+      <div class="browser-group">
+        <a class="chrome-btn plain" href="index.html" aria-label="Home"><svg><use href="#i-grid"/></svg></a>
+        <a class="chrome-btn dim" href="index.html" aria-label="Back"><svg><use href="#i-back"/></svg></a>
+        <button class="chrome-btn dim" aria-label="Forward"><svg><use href="#i-forward"/></svg></button>
+      </div>
+      <div class="url"><span>AA</span><span class="url-center"><svg><use href="#i-lock"/></svg>yzjf.github.io/gallery</span><svg><use href="#i-refresh"/></svg></div>
+      <div class="browser-group"></div>
+    </nav>
+
+    <nav class="rail" aria-label="Primary navigation">
+      <a href="index.html" aria-label="About"><svg><use href="#i-home"/></svg></a>
+      <a href="index.html#projects" aria-label="Projects"><svg><use href="#i-code"/></svg></a>
+      <a href="index.html#research" aria-label="Research"><svg><use href="#i-paper"/></svg></a>
+      <a href="index.html#opensource" aria-label="Open source"><svg><use href="#i-git"/></svg></a>
+      <a class="active" href="gallery.html" aria-label="Gallery"><svg><use href="#i-share"/></svg></a>
+    </nav>
+
+    <section class="window">
+      <header class="site-header">
+        <div class="search"><svg><use href="#i-search"/></svg><span>Selected artwork</span></div>
+        <div class="header-right">
+          <nav class="tabs" aria-label="Portfolio sections">
+            <a class="tab" href="index.html">About</a>
+            <a class="tab" href="index.html#projects">Projects</a>
+            <a class="tab" href="index.html#research">Research</a>
+            <a class="tab" href="index.html#opensource">Open Source</a>
+            <a class="tab active" href="gallery.html">Gallery</a>
+          </nav>
+        </div>
+        <button class="hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
+      </header>
+      <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-grid">
+          <a href="index.html">About</a><a href="index.html#projects">Projects</a>
+          <a href="index.html#research">Research</a><a href="index.html#opensource">Open Source</a>
+          <a href="gallery.html">Gallery</a>
+        </div>
+      </div>
+      <section>
+        <div class="projects-head">
+          <div><span class="section-kicker">Outside the terminal</span><h2>Gallery</h2></div>
+          <a class="see-all" href="index.html">Back to home</a>
+        </div>
+        <div class="gallery-list">
+          <article class="glass-piece">
+            <div class="art-frame logo"><img src="assets/gallery/aitopia-logo.png" alt="AITOPIA logo lockup designed by Yuhan Ma"></div>
+            <div class="art-frame dark"><img src="assets/gallery/aitopia-sign.jpg" alt="AITOPIA illuminated sign in production use"></div>
+            <div class="glass-copy">
+              <h3>AITOPIA</h3>
+              <p>Company identity I designed. Now in production use, with a patent application filed.</p>
+              <div class="glass-tags"><span>Identity</span><span>In production</span><span>Patent pending</span></div>
+            </div>
+          </article>
+          <article class="glass-piece">
+            <div class="art-frame dark"><img src="assets/gallery/makeup-a.jpg" alt="Creative makeup look from Song-painting glass-dissolve references"></div>
+            <div class="art-frame dark"><img src="assets/gallery/makeup-b.jpg" alt="Creative makeup look from Y2K gold-foil references"></div>
+            <div class="glass-copy">
+              <h3>Creative Makeup</h3>
+              <p>Picture-generation autoresearch for creative makeup: reference search, visual referencing, element extraction, and look generation.</p>
+              <div class="glass-tags"><span>Picture generation</span><span>Autoresearch</span><span>Element extraction</span><a href="https://github.com/YZJF/makeup">View repo</a></div>
+            </div>
+          </article>
+          <article class="glass-piece">
+            <div class="art-frame dark"><img src="assets/gallery/projection-scene.jpg" alt="Interactive projection scene with a diorama of figures, clouds, and a red rose"></div>
+            <div class="art-frame dark"><img src="assets/gallery/projection-rose.jpg" alt="Close-up of a projected rose in a dark technical environment"></div>
+            <div class="glass-copy">
+              <h3>Interactive Projection</h3>
+              <p>An interactive spatial projection piece. Scene built in Blender and real-time in Unreal Engine.</p>
+              <div class="glass-tags"><span>Blender</span><span>UE</span><span>Interactive projection</span></div>
+            </div>
+          </article>
+          <article class="glass-piece frames-3">
+            <div class="art-frame dark"><img src="assets/gallery/arch-night.jpg" alt="Night exterior of the Ru Mo architectural design with lanterns"></div>
+            <div class="art-frame dark"><img src="assets/gallery/arch-canopy.jpg" alt="Interior under a folded metallic canopy with visitor silhouettes"></div>
+            <div class="art-frame dark"><img src="assets/gallery/arch-hall.jpg" alt="Interior hall mixing folded massing with traditional objects"></div>
+            <div class="glass-copy">
+              <h3>Architecture Design</h3>
+              <p>Architectural design. Ink-like folded massing, with a night exterior and interior atmospheres.</p>
+              <div class="glass-tags"><span>Architecture</span><span>Concept</span></div>
+            </div>
+          </article>
+          <article class="glass-piece">
+            <div class="art-frame studio"><img src="assets/gallery/avatar-pose.jpg" alt="3D avatar of Yuhan Ma in a thinking pose"></div>
+            <div class="art-frame dark"><img src="assets/gallery/avatar-face.jpg" alt="3D avatar of Yuhan Ma with a face generated from photographs"></div>
+            <div class="glass-copy">
+              <h3>Avatar</h3>
+              <p>A 3D model of myself, with the face generated from photographs.</p>
+              <div class="glass-tags"><span>3D modeling</span><span>Picture-face generation</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const menuButton = document.querySelector(".hamburger");
+    const menu = document.querySelector("#mobile-menu");
+    menuButton.addEventListener("click", e => {
+      e.stopPropagation();
+      menu.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(menu.classList.contains("open")));
+    });
+    document.addEventListener("click", e => { if (!menu.contains(e.target) && !menuButton.contains(e.target)) menu.classList.remove("open") });
+  </script>
+</body>
+</html>
