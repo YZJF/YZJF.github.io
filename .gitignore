@@ -1,0 +1,10 @@
+# Designed portfolio is local-only. GitHub Pages serves the academic index.
+portfolio.html
+gallery.html
+academic.html
+assets/gallery/
+assets/logo-aitopia.png
+assets/logo-tsinghua.svg
+assets/logo-ucsd.svg
+assets/project-*.png
+assets/room-background.webp
